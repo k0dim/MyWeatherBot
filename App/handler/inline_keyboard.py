@@ -8,6 +8,7 @@ BTN_SUN_TIME = InlineKeyboardButton('Sunrise and sunset', callback_data='sun_tim
 # LOCATION = InlineKeyboardButton('Submit your location 📍', callback_data='location')
 LOCATION = ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton('Submit your location 📍', request_location=True))
 
+
 WEATHER = InlineKeyboardMarkup().add(BTN_WIND, BTN_SUN_TIME)
 WIND = InlineKeyboardMarkup().add(BTN_WEATHER).add(BTN_SUN_TIME)
 SUN_TIME = InlineKeyboardMarkup().add(BTN_WEATHER, BTN_WIND)

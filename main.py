@@ -7,6 +7,7 @@ from aiogram.dispatcher import FSMContext
 import App.handler.inline_keyboard as ik
 import App.handler.messages as mes
 from App.database.db_settings import DBweather
+from App.handler.coordinate_text import get_coordinat
 
 logger = logging.getLogger(__name__)
 
@@ -27,13 +28,15 @@ dp = Dispatcher(bot=bot)
 
 @dp.message_handler(commands=['start'])
 async def send_location(message: types.Message, state: FSMContext):
-    await message.answer(text=f'Hi @{message.chat.username}!\nPlease write your location',
+    await message.answer(text=f'Hi @{message.chat.username}!\n' \
+                                'I can tell you the current weather!\n' \
+                                'Write the name of the city ✏️\n' \
+                                'Or send your geolocation using the button below 📍',
                         reply_markup=ik.LOCATION)
 
 
 @dp.message_handler(content_types=[types.ContentType.LOCATION])
 async def get_location(message: types.Location, state: FSMContext):
-
     if not db.search_user(message.chat.id):
         db.insert(
             id=message.chat.id,
@@ -47,9 +50,32 @@ async def get_location(message: types.Location, state: FSMContext):
             latitude = message.location['latitude'],
             longitude = message.location['longitude']
         )
-
     await bot.send_message(chat_id=message.chat.id, text=mes.weather(message.chat.id),
                             reply_markup=ik.WEATHER)
+
+
+@dp.message_handler()
+async def get_location_text(message: types.Message, state: FSMContext):
+    try:
+        coordinate = get_coordinat(str(message.text))
+        if not db.search_user(message.chat.id):
+            db.insert(
+                id=message.chat.id,
+                username=message.chat.username,
+                latitude = coordinate['latitude'],
+                longitude = coordinate['longitude']
+            )
+        else:
+            db.update(
+                id=message.chat.id,
+                latitude = coordinate['latitude'],
+                longitude = coordinate['longitude']
+            )
+        await bot.send_message(chat_id=message.chat.id, text=mes.weather(message.chat.id),
+                                reply_markup=ik.WEATHER)
+    except:
+        await bot.send_message(chat_id=message.chat.id, text=f'Location "{message.text}" not found\n'
+                                                                'Please correct your request.\n')
 
 
 @dp.message_handler(commands=['weather'])
