@@ -33,8 +33,6 @@ async def send_location(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=[types.ContentType.LOCATION])
 async def get_location(message: types.Location, state: FSMContext):
-    latitude = message.location['latitude']
-    longitude = message.location['longitude']
 
     if not db.search_user(message.chat.id):
         db.insert(
