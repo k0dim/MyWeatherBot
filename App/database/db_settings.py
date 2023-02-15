@@ -1,10 +1,13 @@
 import pymongo
 from datetime import datetime
+import configparser
 
+configs = configparser.ConfigParser()
+configs.read('config.ini')
 
 class DBweather:
     def __init__(self):
-        self.client = pymongo.MongoClient("localhost", 27017)
+        self.client = pymongo.MongoClient(configs['DB_KEY']['HOST'], int(configs['DB_KEY']['PORT']))
         self.db = self.client['weatherbotdb']
         self.collectins = self.db['location']
 
