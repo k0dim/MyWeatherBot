@@ -1,12 +1,12 @@
 # MyWeatherBot
-Привет, здесь описан телеграм-бот, который умеет отправлять погоду.
-Уснать текущую погоду можно двумя способами:
-* Отправить свою геолокацию (кнопка: Submit your location 📍)
-* Написать название своего населенного пунка
+Hello, here is a telegram bot that can send weather.
+There are two ways to check the current weather:
+* Submit your location (button: Submit your location 📍)
+* Write the name of your locality
 
-## Для запуска бота необходимо:
-1. Установить MongoDB
-2. Создать файл конфигурации "config.ini" по следующему формату:
+## To start the bot you need:
+1. Install MongoDB
+2. Create configuration file "config.ini" with the following format:
 ```
 [APIKEY]
 APIKEY_BOT = ...
@@ -15,7 +15,7 @@ APIKEY_BOT = ...
 HOST = ...
 PORT = ...
 ```
-3. Установить виртуальное окружение и настроить зависимости:
+3. Install virtual environment and configure dependencies:
 ```
 pip install -r requirements.txt
 ```
